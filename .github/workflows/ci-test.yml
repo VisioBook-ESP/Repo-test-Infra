@@ -2,6 +2,10 @@ name: Test Org Runner
 
 on: [push]
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   org-runner-test:
     runs-on: ubuntu-latest
