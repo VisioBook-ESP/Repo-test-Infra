@@ -69,40 +69,40 @@ jobs:
         run : |
           git clone https://github.com/VisioBook-ESP/infra-helm-charts.git
           pwd
-          ls -la infra-helm-charts/environnement/dev/charts/dev
+          ls -la infra-helm-charts/environnement/dev/charts
 
-      - name: Deploy & test Chart
+      - name: Deploy Chart
         run : |
-          helm install my-app infra-helm-charts/environnement/dev/charts/dev/nginx-test/
+          helm install my-app infra-helm-charts/environnement/dev/charts/nginx-test/
 
-#      - name: Deploy & test all charts
-#        run: |
-#          set -e
-#          for chart in environnement/dev/charts/*; do
-#            if [ -f "$chart/Chart.yaml" ]; then
-#              release=$(basename $chart)
-#              echo "🚀 Deploying chart: $release"
-#
-#
-#              helm upgrade --install $release $chart --wait --timeout 180s || {
-#                echo "❌ Helm install failed for $release"
-#                exit 1
-#              }
-#
-#              echo "✅ Chart $release deployed"
-#
-#              svc=$(kubectl get svc -l "app.kubernetes.io/instance=$release" -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || true)
-#
-#              if [ -n "$svc" ]; then
-#                echo "🔍 Service found for $release: $svc"
-#
-#                nohup kubectl port-forward svc/$svc 8080:80 >/dev/null 2>&1 &
-#                sleep 5
-#                echo "🌐 Testing service for $release"
-#                curl --max-time 10 --retry 5 --retry-delay 5 http://127.0.0.1:8080 || echo "⚠️ Curl failed for $release"
-#                kill $(jobs -p) || true
-#              else
-#                echo "⚠️ No service found for $release, skipping curl test"
-#              fi
-#            fi
-#          done
+      - name: Wait for Pods to be Ready and Test Service
+        run: |
+          release="my-app"
+
+          echo "⏳ Waiting for pods to be ready for release: $release"
+          kubectl wait --for=condition=ready pod -l "app.kubernetes.io/instance=$release" --timeout=120s
+
+          svc=$(kubectl get svc -l "app.kubernetes.io/instance=$release" -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || true)
+
+          if [ -n "$svc" ]; then
+            echo "🔍 Service found for $release: $svc"
+
+            # Port-forward dans un process en arrière-plan
+            kubectl port-forward svc/$svc 8080:80 >/dev/null 2>&1 &
+            PF_PID=$!
+
+            # Pause le temps que le forward se mette en place
+            sleep 5
+
+            echo "🌐 Testing service for $release..."
+            if curl --max-time 10 --retry 5 --retry-delay 5 http://127.0.0.1:8080; then
+              echo "✅ Service is responding!"
+            else
+              echo "⚠️ Service did not respond correctly!"
+            fi
+
+            # Nettoyage du port-forward
+            kill $PF_PID || true
+          else
+            echo "⚠️ No service found for $release, skipping curl test"
+          fi
