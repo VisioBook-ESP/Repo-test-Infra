@@ -65,11 +65,15 @@ jobs:
         uses: azure/setup-helm@v3
         with:
           version: v3.14.0
-      - name: Pull Charts from Infra Repo
+      - name: Clone Charts from Infra Repo
         run : |
           git clone https://github.com/VisioBook-ESP/infra-helm-charts.git
           pwd
-          ls -la infra-helm-charts/environnement/dev/charts
+          ls -la infra-helm-charts/environnement/dev/charts/dev
+
+      - name: Deploy & test Chart
+        run : |
+          helm install my-app infra-helm-charts/environnement/dev/charts/dev/nginx-test/
 
 #      - name: Deploy & test all charts
 #        run: |
