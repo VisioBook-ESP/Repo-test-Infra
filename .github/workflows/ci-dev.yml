@@ -74,9 +74,7 @@ jobs:
       - name: Deploy Chart
         run : |
           helm install my-app infra-helm-charts/environnement/dev/charts/nginx-test/
-
-      - name: Wait for Pods to be Ready and Test Service
-        run: |
+          
           release="my-app"
           namespace="default" # change si ton chart déploie ailleurs
 
@@ -140,3 +138,4 @@ jobs:
           else
             echo "⚠️ No service found for $release, skipping curl test"
           fi
+          
