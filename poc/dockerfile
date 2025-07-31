@@ -1,0 +1,13 @@
+# Use the official NGINX image as a base
+FROM nginx:alpine
+
+# Copy your custom NGINX config file (optional)
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copy your website files (e.g., HTML) into the NGINX web root
+# COPY ./html /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Start NGINX (already handled by base image CMD)

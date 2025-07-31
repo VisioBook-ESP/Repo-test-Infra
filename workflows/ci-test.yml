@@ -1,0 +1,35 @@
+name: Test Org Runner
+
+on: [push]
+
+jobs:
+  org-runner-test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "✅ Running on organization-level self-hosted runner!"
+
+  docker-build-and-push:
+    runs-on: ubuntu-latest
+    needs: org-runner-test
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t ghcr.io/visiobook-esp/core-api-gateway:latest ./poc
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/visiobook-esp/core-api-gateway:latest
