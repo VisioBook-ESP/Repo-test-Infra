@@ -26,6 +26,7 @@ jobs:
       - name: Build application
         run: |
           echo "Building application..."
+          cd app/frontend
           npm run build
   unite-test-app:
     runs-on: ubuntu-latest
@@ -37,6 +38,7 @@ jobs:
       - name: Test application
         run: |
           echo "Running tests..."
+          cd app/frontend
           npm run test
 
   docker-build-and-push:
