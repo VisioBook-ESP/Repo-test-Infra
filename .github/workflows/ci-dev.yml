@@ -26,9 +26,8 @@ jobs:
       - name: Build application
         run: |
           echo "Building application..."
-          pwd
           cd app/frontend
-          pwd
+          npm install
           npm run build
   unite-test-app:
     runs-on: ubuntu-latest
