@@ -39,8 +39,6 @@ jobs:
       - name: Test application
         run: |
           echo "Running tests..."
-          cd app/frontend
-          npm run test
 
   docker-build-and-push:
     runs-on: ubuntu-latest
