@@ -98,7 +98,7 @@ jobs:
 
       - name: Deploy Chart
         run: |
-          helm install my-app infra-helm-charts/environnement/dev/charts/nuxt/
+              helm install my-app infra-helm-charts/environnement/dev/charts/nuxt/
 
           release="my-app"
           namespace="default" # change if your chart deploys to another namespace
