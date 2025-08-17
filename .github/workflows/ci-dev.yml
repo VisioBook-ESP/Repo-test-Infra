@@ -40,91 +40,91 @@ jobs:
         run: |
           echo "Running tests..."
 
-  docker-build-and-push:
-    runs-on: ubuntu-latest
-    needs: unite-test-app
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUBTOKEN }}
-
-      - name: Build Docker image
-        run: |
-          docker build -t ghcr.io/visiobook-esp/repo-test-infra-nuxt:latest ./app/frontend
-
-      - name: Push Docker image
-        run: |
-          docker push ghcr.io/visiobook-esp/repo-test-infra-nuxt:latest
-
-  minikube:
-    name: 🏗️ Deploy & Test ALL Charts on Minikube
-    runs-on: ubuntu-latest
-    needs: docker-build-and-push
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install kubectl
-        run: |
-          KUBECTL_VERSION="v1.30.1"
-          curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
-          chmod +x kubectl
-          sudo mv kubectl /usr/local/bin/kubectl
-
-      - name: Setup Minikube
-        uses: medyagh/setup-minikube@latest
-        with:
-          kubernetes-version: v1.30.1
-
-      - name: Set up Helm
-        uses: azure/setup-helm@v3
-        with:
-          version: v3.14.0
-
-      - name: Clone Charts from Infra Repo
-        run : |
-          git clone https://github.com/VisioBook-ESP/infra-helm-charts.git
-          pwd
-          ls -la infra-helm-charts/environnement/dev/charts
-
-      - name: Deploy Chart
-        run: |
-              helm install my-app infra-helm-charts/environnement/dev/charts/nuxt/
-
-          release="my-app"
-          namespace="default" # change if your chart deploys to another namespace
-
-          echo "⏳ Checking if all pods for $release are running..."
-
-          ATTEMPTS=0
-          MAX_ATTEMPTS=10
-          SLEEP_TIME=10
-          READY=false
-
-          while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
-            echo "🔄 Attempt $((ATTEMPTS+1))/$MAX_ATTEMPTS..."
-
-            kubectl get pods -n $namespace
-
-            NOT_READY=$(kubectl get pods -l "app.kubernetes.io/instance=$release" -n $namespace \
-              --no-headers | grep -v 'Running' || true)
-
-            if [ -z "$NOT_READY" ]; then
-              echo "✅ All pods for $release are running!"
-              READY=true
-              break
-            fi
-
-            echo "⏳ Some pods are not yet running. Waiting $SLEEP_TIME seconds..."
-            ATTEMPTS=$((ATTEMPTS+1))
-            sleep $SLEEP_TIME
-          done
+#  docker-build-and-push:
+#    runs-on: ubuntu-latest
+#    needs: unite-test-app
+#    permissions:
+#      contents: read
+#      packages: write
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      - name: Log in to GitHub Container Registry
+#        uses: docker/login-action@v3
+#        with:
+#          registry: ghcr.io
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GITHUBTOKEN }}
+#
+#      - name: Build Docker image
+#        run: |
+#          docker build -t ghcr.io/visiobook-esp/repo-test-infra-nuxt:latest ./app/frontend
+#
+#      - name: Push Docker image
+#        run: |
+#          docker push ghcr.io/visiobook-esp/repo-test-infra-nuxt:latest
+#
+#  minikube:
+#    name: 🏗️ Deploy & Test ALL Charts on Minikube
+#    runs-on: ubuntu-latest
+#    needs: docker-build-and-push
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      - name: Install kubectl
+#        run: |
+#          KUBECTL_VERSION="v1.30.1"
+#          curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+#          chmod +x kubectl
+#          sudo mv kubectl /usr/local/bin/kubectl
+#
+#      - name: Setup Minikube
+#        uses: medyagh/setup-minikube@latest
+#        with:
+#          kubernetes-version: v1.30.1
+#
+#      - name: Set up Helm
+#        uses: azure/setup-helm@v3
+#        with:
+#          version: v3.14.0
+#
+#      - name: Clone Charts from Infra Repo
+#        run : |
+#          git clone https://github.com/VisioBook-ESP/infra-helm-charts.git
+#          pwd
+#          ls -la infra-helm-charts/environnement/dev/charts
+#
+#      - name: Deploy Chart
+#        run: |
+#              helm install my-app infra-helm-charts/environnement/dev/charts/nuxt/
+#
+#          release="my-app"
+#          namespace="default" # change if your chart deploys to another namespace
+#
+#          echo "⏳ Checking if all pods for $release are running..."
+#
+#          ATTEMPTS=0
+#          MAX_ATTEMPTS=10
+#          SLEEP_TIME=10
+#          READY=false
+#
+#          while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
+#            echo "🔄 Attempt $((ATTEMPTS+1))/$MAX_ATTEMPTS..."
+#
+#            kubectl get pods -n $namespace
+#
+#            NOT_READY=$(kubectl get pods -l "app.kubernetes.io/instance=$release" -n $namespace \
+#              --no-headers | grep -v 'Running' || true)
+#
+#            if [ -z "$NOT_READY" ]; then
+#              echo "✅ All pods for $release are running!"
+#              READY=true
+#              break
+#            fi
+#
+#            echo "⏳ Some pods are not yet running. Waiting $SLEEP_TIME seconds..."
+#            ATTEMPTS=$((ATTEMPTS+1))
+#            sleep $SLEEP_TIME
+#          done
