@@ -40,32 +40,32 @@ jobs:
         run: |
           echo "Running tests..."
 
-#  docker-build-and-push:
-#    runs-on: ubuntu-latest
-#    needs: unite-test-app
-#    permissions:
-#      contents: read
-#      packages: write
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      - name: Log in to GitHub Container Registry
-#        uses: docker/login-action@v3
-#        with:
-#          registry: ghcr.io
-#          username: ${{ github.actor }}
-#          password: ${{ secrets.GITHUBTOKEN }}
-#
-#      - name: Build Docker image
-#        run: |
-#          docker build -t ghcr.io/visiobook-esp/repo-test-infra-nuxt:latest ./app/frontend
-#
-#      - name: Push Docker image
-#        run: |
-#          docker push ghcr.io/visiobook-esp/repo-test-infra-nuxt:latest
-#
+  docker-build-and-push:
+    runs-on: ubuntu-latest
+    needs: unite-test-app
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUBTOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t ghcr.io/visiobook-esp/repo-test-infra-nuxt:latest ./app/frontend
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/visiobook-esp/repo-test-infra-nuxt:latest
+
 #  minikube:
 #    name: 🏗️ Deploy & Test ALL Charts on Minikube
 #    runs-on: ubuntu-latest
