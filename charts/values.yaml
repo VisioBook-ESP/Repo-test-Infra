@@ -2,7 +2,7 @@ replicaCount: 1
 name: Repo-test-Infra-Front
 
 image:
-  repository: ghcr.io/visiobook-esp/Repo-test-Infra-Front-dev
+  repository: ghcr.io/visiobook-esp/docker pull ghcr.io/visiobook-esp/repo-test-infra-nuxt
   tag: latest
   pullPolicy: IfNotPresent
 
