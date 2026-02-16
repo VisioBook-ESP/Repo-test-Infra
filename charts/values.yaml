@@ -1,0 +1,71 @@
+replicaCount: 1
+name: Repo-test-Infra-Front
+
+image:
+  repository: ghcr.io/visiobook-esp/Repo-test-Infra-Front-dev
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 80
+  nodePort: 30081
+
+istio:
+  enabled: true
+  injection: true
+
+  destinationRule:
+    enabled: true
+    trafficPolicy:
+      connectionPool:
+        tcp:
+          maxConnections: 100
+        http:
+          http1MaxPendingRequests: 100
+          http2MaxRequests: 100
+          maxRequestsPerConnection: 2
+      loadBalancer:
+        simple: ROUND_ROBIN
+      outlierDetection:
+        consecutiveErrors: 5
+        interval: 30s
+        baseEjectionTime: 30s
+
+  mtls:
+    enabled: true
+    mode: ISTIO_MUTUAL
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+podLabels:
+  app: Repo-test-Infra-Front
+  version: "latest"
+  app.kubernetes.io/name: Repo-test-Infra-Front
+  app.kubernetes.io/version: "latest"
+  app.kubernetes.io/component: backend
+
+resources: {}
+
+# External secret name - managed by infra repo
+# The secret must contain: DATABASE_URL, RSA_PRIVATE_KEY
+existingSecret: ""
+
+env:
+  SERVICE_NAME: Repo-test-Infra-Front
+  SERVICE_VERSION: 1.0.0
+  ENV: prod
+  PORT: 8080
+  LOG_LEVEL: info
+  DATABASE_ECHO: false
+  JWT_ALGORITHM: RS256
+  JWT_KID: visiobook-key-1
+  JWT_ISSUER: Repo-test-Infra-Front
+  ACCESS_TOKEN_EXPIRE_MINUTES: 30
+  # CORS_ORIGINS: ["http://localhost:3000","http://localhost:8080"]
+
+  # Configuration Python
+  PYTHONPATH: /app
+  PYTHONUNBUFFERED: 1
