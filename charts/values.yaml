@@ -1,8 +1,8 @@
 replicaCount: 1
-name: Repo-test-Infra-Front
+name: repo-test-infra-front
 
 image:
-  repository: ghcr.io/visiobook-esp/docker pull ghcr.io/visiobook-esp/repo-test-infra-nuxt
+  repository: ghcr.io/visiobook-esp/repo-test-infra-nuxt
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -41,9 +41,9 @@ tolerations: []
 affinity: {}
 
 podLabels:
-  app: Repo-test-Infra-Front
+  app: repo-test-infra-front
   version: "latest"
-  app.kubernetes.io/name: Repo-test-Infra-Front
+  app.kubernetes.io/name: repo-test-infra-front
   app.kubernetes.io/version: "latest"
   app.kubernetes.io/component: backend
 
@@ -54,7 +54,7 @@ resources: {}
 existingSecret: ""
 
 env:
-  SERVICE_NAME: Repo-test-Infra-Front
+  SERVICE_NAME: repo-test-infra-front
   SERVICE_VERSION: 1.0.0
   ENV: prod
   PORT: 8080
@@ -62,7 +62,7 @@ env:
   DATABASE_ECHO: false
   JWT_ALGORITHM: RS256
   JWT_KID: visiobook-key-1
-  JWT_ISSUER: Repo-test-Infra-Front
+  JWT_ISSUER: repo-test-infra-front
   ACCESS_TOKEN_EXPIRE_MINUTES: 30
   # CORS_ORIGINS: ["http://localhost:3000","http://localhost:8080"]
 

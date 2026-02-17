@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "Repo-test-Infra-Front.fullname" . }}
+  name: {{ include "repo-test-infra-front.fullname" . }}
   labels:
-    app: {{ include "Repo-test-Infra-Front.name" . }}
+    app: {{ include "repo-test-infra-front.name" . }}
   annotations:
     argocd.argoproj.io/sync-wave: {{ .Values.syncWave | default "0" | quote }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "Repo-test-Infra-Front.name" . }}
+      app: {{ include "repo-test-infra-front.name" . }}
   template:
     metadata:
       labels:
-        app: {{ include "Repo-test-Infra-Front.name" . }}
+        app: {{ include "repo-test-infra-front.name" . }}
         {{- if .Values.istio.enabled }}
         version: {{ .Values.image.tag | quote }}
         {{- end }}

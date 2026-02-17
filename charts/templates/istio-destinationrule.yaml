@@ -2,11 +2,11 @@
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
-  name: {{ include "Repo-test-Infra-Front.fullname" . }}
+  name: {{ include "repo-test-infra-front.fullname" . }}
   labels:
-    {{- include "Repo-test-Infra-Front.labels" . | nindent 4 }}
+    {{- include "repo-test-infra-front.labels" . | nindent 4 }}
 spec:
-  host: {{ include "Repo-test-Infra-Front.fullname" . }}
+  host: {{ include "repo-test-infra-front.fullname" . }}
   trafficPolicy:
     {{- toYaml .Values.istio.destinationRule.trafficPolicy | nindent 4 }}
     {{- if .Values.istio.mtls.enabled }}
