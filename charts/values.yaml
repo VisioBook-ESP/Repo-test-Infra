@@ -57,4 +57,5 @@ env:
   SERVICE_NAME: repo-test-infra-front
   PORT: "3000"
   TRUC: "bidule"
+  MARCHIN: "machin"
   
