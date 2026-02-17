@@ -55,4 +55,5 @@ existingSecret: ""
 
 env:
   SERVICE_NAME: repo-test-infra-front
+  PORT: "3000"
   

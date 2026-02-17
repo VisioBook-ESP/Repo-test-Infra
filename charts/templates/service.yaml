@@ -10,5 +10,5 @@ spec:
     app: {{ include "repo-test-infra-front.name" . }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: 8080
+      targetPort: {{ .Values.env.PORT | default 3000 }}
       nodePort: {{ .Values.service.nodePort }}
