@@ -6,11 +6,6 @@ metadata:
     app: {{ include "Repo-test-Infra-Front.name" . }}
   annotations:
     argocd.argoproj.io/sync-wave: {{ .Values.syncWave | default "0" | quote }}
-    checksum/chart: {{ print (toYaml .Values) (.Files.Glob "**" | toString) | sha256sum | quote }}
-    {{- if .Values.istio.injection }}
-    sidecar.istio.io/inject: "true"
-    {{- end }}
-
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -23,10 +18,11 @@ spec:
         {{- if .Values.istio.enabled }}
         version: {{ .Values.image.tag | quote }}
         {{- end }}
-      {{- if .Values.istio.injection }}
       annotations:
+        checksum/chart: {{ print (toYaml .Values) (.Files.Glob "**" | toString) | sha256sum | quote }}
+        {{- if .Values.istio.injection }}
         sidecar.istio.io/inject: "true"
-      {{- end }}
+        {{- end }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
