@@ -56,7 +56,7 @@ revisionHistoryLimit: 3 # nombre de revision garder sur un pod
 progressDeadlineSeconds: 60 # temps max pour que le pod soit opérationnel avant de considérer que le déploiement a échoué
 env:
   SERVICE_NAME: repo-test-infra-front
-  PORT: "3000"
+  # PORT: "3000"
   TRUC: "bidule"
   MARCHIN: "machin"
   
