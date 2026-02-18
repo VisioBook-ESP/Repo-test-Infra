@@ -52,7 +52,8 @@ resources: {}
 # External secret name - managed by infra repo
 # The secret must contain: DATABASE_URL, RSA_PRIVATE_KEY
 existingSecret: ""
-revisionHistoryLimit: 3
+revisionHistoryLimit: 3 # nombre de revision garder sur un pod
+progressDeadlineSeconds: 60 # temps max pour que le pod soit opérationnel avant de considérer que le déploiement a échoué
 env:
   SERVICE_NAME: repo-test-infra-front
   PORT: "3000"
