@@ -8,7 +8,7 @@ metadata:
     argocd.argoproj.io/sync-wave: {{ .Values.syncWave | default "0" | quote }}
 spec:
   replicas: {{ .Values.replicaCount }}
-  
+  progressDeadlineSeconds: 300
   selector:
     matchLabels:
       app: {{ include "repo-test-infra-front.name" . }}
