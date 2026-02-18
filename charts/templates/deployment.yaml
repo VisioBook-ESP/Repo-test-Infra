@@ -8,6 +8,7 @@ metadata:
     argocd.argoproj.io/sync-wave: {{ .Values.syncWave | default "0" | quote }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit | default 2 }}
   progressDeadlineSeconds: 300
   selector:
     matchLabels:

@@ -52,7 +52,7 @@ resources: {}
 # External secret name - managed by infra repo
 # The secret must contain: DATABASE_URL, RSA_PRIVATE_KEY
 existingSecret: ""
-
+revisionHistoryLimit: 3
 env:
   SERVICE_NAME: repo-test-infra-front
   PORT: "3000"
