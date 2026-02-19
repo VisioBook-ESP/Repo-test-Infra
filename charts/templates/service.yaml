@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "repo-test-infra-front.fullname" . }}
+  labels:
+    app: {{ include "repo-test-infra-front.name" . }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ include "repo-test-infra-front.name" . }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.env.PORT | default 3000 }}
+      nodePort: {{ .Values.service.nodePort }}
