@@ -10,6 +10,9 @@ spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit | default 2 }}
   progressDeadlineSeconds: {{ .Values.progressDeadlineSeconds | default 300 }}
+  minReadySeconds: {{ .Values.minReadySeconds | default 0 }}
+  strategy:
+    type: {{ .Values.strategy.type | default "Recreate" }}
   selector:
     matchLabels:
       app: {{ include "repo-test-infra-front.name" . }}
@@ -26,6 +29,7 @@ spec:
         sidecar.istio.io/inject: "true"
         {{- end }}
     spec:
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds | default 30 }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
