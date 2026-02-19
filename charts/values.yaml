@@ -64,7 +64,7 @@ minReadySeconds: 10 # le pod doit être stable 10s avant d'être considéré Ava
 terminationGracePeriodSeconds: 10 # délai avant SIGKILL (30s par défaut, réduit pour les tests)
 env:
   SERVICE_NAME: repo-test-infra-front
-  # PORT: "3000"
+  PORT: "3000"
   TRUC: "bidule"
   MARCHIN: "machin"
   
