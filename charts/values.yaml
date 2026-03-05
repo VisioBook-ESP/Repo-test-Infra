@@ -3,8 +3,8 @@ name: repo-test-infra-front
 
 image:
   repository: ghcr.io/visiobook-esp/repo-test-infra-nuxt
-  tag: latest
-  pullPolicy: Always
+  tag: latest  # updated automatically by CI with sha-<commit>
+  pullPolicy: IfNotPresent
 
 service:
   type: NodePort
