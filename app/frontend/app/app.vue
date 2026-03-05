@@ -1,7 +1,7 @@
 <template>
   <div>
     <NuxtRouteAnnouncer />
-    <NuxtWelcome 4/>
+    <NuxtWelcome 5/>
     <div>coucou</div>
   </div>
 </template>
