@@ -3,7 +3,7 @@ name: repo-test-infra-front
 
 image:
   repository: ghcr.io/visiobook-esp/repo-test-infra-nuxt
-  tag: "sha-6eb5eb8"
+  tag: "sha-3718543"
   pullPolicy: IfNotPresent
 
 service:
