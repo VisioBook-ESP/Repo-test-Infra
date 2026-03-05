@@ -3,7 +3,7 @@ name: repo-test-infra-front
 
 image:
   repository: ghcr.io/visiobook-esp/repo-test-infra-nuxt
-  tag: latest  # updated automatically by CI with sha-<commit>
+  tag: "sha-26e075e"
   pullPolicy: IfNotPresent
 
 service:
